@@ -1,0 +1,56 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore: 'README.md'
+  workflow_dispatch:
+   
+env:
+  # Change these values if you have forked it for your own works
+  MAIN_SOURCEFORGE_USERNAME: "boxboi"
+  MAIN_SOURCEFORGE_PASSWORD: "${{ secrets.MAIN_SOURCEFORGE_PASSWORD }}"
+  ALT_SOURCEFORGE_USERNAME: "boxalt"
+  ALT_SOURCEFORGE_PASSWORD: "${{ secrets.ALT_SOURCEFORGE_PASSWORD }}"
+  CRDROID_SOURCEFORGE_USERNAME: "${{ secrets.CRDROID_SOURCEFORGE_USERNAME }}"
+  CRDROID_SOURCEFORGE_PASSWORD: "${{ secrets.CRDROID_SOURCEFORGE_PASSWORD }}"
+  CUSTOM_PROJECT_NAME: "boxaltroms"
+  GIT_USER_NAME: "box-automation1"
+  GIT_REPO_NAME: "releasebot"
+  GIT_TOKEN: "${{ secrets.GIT_TOKEN }}"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Start Download And Upload Process
+        run: |
+          git clone --depth=1 --single-branch https://$GIT_USER_NAME:$GIT_TOKEN@github.com/$GIT_USER_NAME/$GIT_REPO_NAME workingdir
+          cd workingdir
+          DEVICE_CODENAME=$(< "DEVICE_CODENAME.txt")
+          ROM_CODENAME=$(< "ROM_CODENAME.txt")
+          ROMNAME=$(< "ROMNAME.txt")
+          URL=$(< "URL.txt")
+          sudo apt install sshpass aria2 wget -y
+          ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
+          aria2c "$URL"
+          FILE=$(ls -t | tail -n 1)
+          FILESIZE=$(stat --format="%s" "$FILE")
+          if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -tr | tail -n 1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
+          if [[ $FILESIZE -lt 400000000 ]]; then aria2c "$URL" && FILE=$(ls -tr | tail -n 1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
+          if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -tr | tail -n 1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
+          if [[ $ROMNAME == crdroid ]]
+          then
+              if [[ $DEVICE_CODENAME == merlin ]]; then DEVICE_CODENAME=merlinx ; fi
+              curl --ssl -k -T "$FILE" ftp://upme.crdroid.net/files/"$DEVICE_CODENAME"/"$ROM_CODENAME"/ --user "$CRDROID_SOURCEFORGE_USERNAME":"CRDROID_SOURCEFORGE_PASSWORD" && echo "https://sourceforge.net/projects/crdroid/files/"$DEVICE_CODENAME"/"$ROM_CODENAME"/"$FILE"/download"
+          elif [[ $ROMNAME == cipher ]] || [[ $ROMNAME == cipheros ]]
+          then
+              sshpass -p "$MAIN_SOURCEFORGE_PASSWORD" scp -o StrictHostKeyChecking=no "$FILE" "$MAIN_SOURCEFORGE_USERNAME"@frs.sourceforge.net:/home/frs/project/cipheros/"$ROM_CODENAME"/"$DEVICE_CODENAME" && echo "https://sourceforge.net/projects/cipheros/files/"$ROM_CODENAME"/"$DEVICE_CODENAME"/"$FILE"/download"
+          elif [[ $ROMNAME == generic ]]
+          then
+              sshpass -p "$ALT_SOURCEFORGE_PASSWORD" scp -o StrictHostKeyChecking=no "$FILE" "$ALT_SOURCEFORGE_USERNAME"@frs.sourceforge.net:/home/frs/project/"$CUSTOM_PROJECT_NAME"/"$DEVICE_CODENAME" && echo "https://sourceforge.net/projects/"$CUSTOM_PROJECT_NAME"/files/"$DEVICE_CODENAME"/"$FILE"/download"
+          fi
+          
+
