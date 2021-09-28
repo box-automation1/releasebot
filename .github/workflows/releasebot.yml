@@ -36,7 +36,7 @@ jobs:
           sudo apt install sshpass aria2 wget -y
           ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
           aria2c "$URL"
-          FILE=$(ls -t | tail -n 1)
+          FILE=$(ls -t | head -1)
           FILESIZE=$(stat --format="%s" "$FILE")
           if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -tr | tail -n 1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
           if [[ $FILESIZE -lt 400000000 ]]; then aria2c "$URL" && FILE=$(ls -tr | tail -n 1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
