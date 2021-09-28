@@ -38,9 +38,9 @@ jobs:
           aria2c "$URL"
           FILE=$(ls -t | head -1)
           FILESIZE=$(stat --format="%s" "$FILE")
-          if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -tr | tail -n 1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
-          if [[ $FILESIZE -lt 400000000 ]]; then aria2c "$URL" && FILE=$(ls -tr | tail -n 1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
-          if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -tr | tail -n 1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
+          if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -t | head -1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
+          if [[ $FILESIZE -lt 400000000 ]]; then aria2c "$URL" && FILE=$(ls -t | head -1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
+          if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -t | head -1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
           if [[ $ROMNAME == crdroid ]]
           then
               if [[ $DEVICE_CODENAME == merlin ]]; then DEVICE_CODENAME=merlinx ; fi
