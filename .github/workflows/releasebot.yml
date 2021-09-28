@@ -37,9 +37,9 @@ jobs:
           ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
           aria2c "$URL"
           FILE=$(ls -t | head -1)
-          echo "$FILE"
           FILESIZE=$(stat --format="%s" "$FILE")
-          echo "$FILESIZE"
+          echo " FileName is $FILE"
+          echo "Filesize is $FILESIZE"
           if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -t | head -1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
           if [[ $FILESIZE -lt 400000000 ]]; then aria2c "$URL" && FILE=$(ls -t | head -1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
           if [[ $FILESIZE -lt 400000000 ]]; then wget "$URL" && FILE=$(ls -t | head -1) && FILESIZE=$(stat --format="%s" "$FILE"); fi
