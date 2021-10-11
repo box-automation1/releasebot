@@ -46,7 +46,7 @@ jobs:
           if [[ $ROMNAME == crdroid ]]
           then
               if [[ $DEVICE_CODENAME == merlin ]]; then DEVICE_CODENAME=merlinx ; fi
-              curl --ssl -k -T "$FILE" ftp://upme.crdroid.net/files/"$DEVICE_CODENAME"/"$ROM_CODENAME"/ --user "$CRDROID_SOURCEFORGE_USERNAME":"CRDROID_SOURCEFORGE_PASSWORD" && echo "https://sourceforge.net/projects/crdroid/files/"$DEVICE_CODENAME"/"$ROM_CODENAME"/"$FILE"/download"
+              curl --ssl -k -T "$FILE" ftp://upme.crdroid.net/files/"$DEVICE_CODENAME"/"$ROM_CODENAME"/ --user "$CRDROID_SOURCEFORGE_USERNAME":"$CRDROID_SOURCEFORGE_PASSWORD" && echo "https://sourceforge.net/projects/crdroid/files/"$DEVICE_CODENAME"/"$ROM_CODENAME"/"$FILE"/download"
           elif [[ $ROMNAME == cipher ]] || [[ $ROMNAME == cipheros ]]
           then
               sshpass -p "$MAIN_SOURCEFORGE_PASSWORD" scp -o StrictHostKeyChecking=no "$FILE" "$MAIN_SOURCEFORGE_USERNAME"@frs.sourceforge.net:/home/frs/project/cipheros/"$ROM_CODENAME"/"$DEVICE_CODENAME" && echo "https://sourceforge.net/projects/cipheros/files/"$ROM_CODENAME"/"$DEVICE_CODENAME"/"$FILE"/download"
