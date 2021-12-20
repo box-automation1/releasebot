@@ -1,1 +1,1 @@
-http://boxmirrorbomt.boxmirrorbomt1.workers.dev/0:/MirrorBomt2/lineage-19.0-20211214-UNOFFICIAL-lava.zip
+https://boxmirrorbomt.boxuserbomt.workers.dev/0:/crDroidAndroid-11.0-20211219-lava-v7.13.zip
