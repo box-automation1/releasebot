@@ -1,1 +1,1 @@
-https://boxaltroms.vercel.app/api/raw/?path=/autoupload/crDroidAndroid-12.1-20221001-lava-S-Vendor-v8.9.zip
+https://boxaltroms.vercel.app/api/raw/?path=/autoupload/crDroidAndroid-12.1-20220922-lava-R-Vendor-v8.9.zip
