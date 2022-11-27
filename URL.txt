@@ -1,1 +1,1 @@
-https://boxaltroms.vercel.app/api/raw/?path=/autoupload/crDroidAndroid-12.1-20221126-merlinx-v8.11.zip
+https://boxaltroms.vercel.app/api/raw/?path=/autoupload/crDroidAndroid-12.1-20221127-lava-v8.11.zip
